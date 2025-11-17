@@ -26,7 +26,7 @@ const ART_IMAGES = [
 
 const ART_IMAGE_URL = ART_IMAGES[0];
 const MUSIC_URL = "/audio/monafuku-theme.mp3"; // your local Nippon Egao Hyakkei mp3
-const SITE_URL = "https://your-monafuku-checker-url.example"; // change to deployed URL later
+const SITE_URL = "https://monafuku-checker.vercel.app/"; // change to deployed URL later
 
 // Local whitelist: store all addresses in lowercase here
 const WHITELIST = [
