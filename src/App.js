@@ -6,7 +6,7 @@
   - Share whitelist status on X/Twitter (no wallet address shown)
 */
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import "./index.css";
 
@@ -38,13 +38,31 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [nfts, setNfts] = useState([]);
   const [error, setError] = useState(null);
-  const [savedWallets, setSavedWallets] = useState([
-    "0x3bBe2C84F6911AA1ab89B7b71979e76eb1B3863c",
-  ]);
+  const [savedWallets, setSavedWallets] = useState(() => {
+  if (typeof window === "undefined") return [];
+  try {
+    const stored = window.localStorage.getItem("mf_recent_wallets");
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+});
   const [hasSearched, setHasSearched] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(
+      "mf_recent_wallets",
+      JSON.stringify(savedWallets)
+    );
+  } catch (e) {
+    console.log("Could not persist recent wallets:", e);
+  }
+}, [savedWallets]);
 
   const toggleMusic = async () => {
     if (!audioRef.current) return;
