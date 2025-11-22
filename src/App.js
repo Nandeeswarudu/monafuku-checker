@@ -227,26 +227,23 @@ export default function App() {
     alert("This wallet is whitelisted for the Monafuku Cafe mint! 🍰");
   };
 
-    // Replace your existing handleShare with this.
-  
-  // --- patched handleShare: opens the validated share page so Twitter shows the OG image ---
-  const handleShare = () => {
-    try {
-      const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now(); // cache-buster so Twitter re-scrapes
-      const text = encodeURIComponent(
-        resultCard?.status === "whitelisted"
-          ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
-          : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
-      );
-      // open composer with text + URL (URL is the share page validated by Card Validator)
-      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`, "_blank", "noopener,noreferrer");
-    } catch (err) {
-      console.error("share failed", err);
-      alert("Failed to open share dialog.");
-    }
-  };
-  // --- end patched handleShare ---
+   const handleShare = () => {
+  // Use the exact public share page that the Card Validator tested.
+  // The ?v= timestamp forces Twitter to re-scrape the page and pick up new images.
+  const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now();
 
+  const text = encodeURIComponent(
+    resultCard?.status === "whitelisted"
+      ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
+      : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
+  );
+
+  window.open(
+    `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`,
+    "_blank",
+    "noopener,noreferrer"
+  );
+};
 
 
   /* ------------------- CARD DOWNLOAD ------------------- */
@@ -435,13 +432,7 @@ export default function App() {
 
                         <div className="mt-3 flex gap-2">
                           <button className="flex-1 py-2 rounded-xl border border-purple-100 text-sm" onClick={handleView}>View</button>
-                         <button 
-  className="py-2 px-3 rounded-xl bg-gradient-to-r from-yellow-200 to-pink-200 text-sm" 
-  onClick={handleShare}
->
-  Share
-</button>
-
+                          <button className="py-2 px-3 rounded-xl bg-gradient-to-r from-yellow-200 to-pink-200 text-sm" onClick={handleShare}>Share</button>
                         </div>
                       </div>
                     </motion.article>
@@ -511,7 +502,7 @@ export default function App() {
                           ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
                           : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
                       );
-                      const url = encodeURIComponent("");
+                      const url = encodeURIComponent(SITE_URL);
                       window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
                     }}
                     className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white"
@@ -532,3 +523,5 @@ export default function App() {
     </div>
   );
 }
+
+
