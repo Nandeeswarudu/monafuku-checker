@@ -238,11 +238,7 @@ export default function App() {
       : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
   );
 
-  window.open(
-    `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`,
-    "_blank",
-    "noopener,noreferrer"
-  );
+  window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`, "_blank");
 };
 
 
@@ -495,16 +491,20 @@ export default function App() {
                 )}
 
                 <div className="mt-6 flex gap-3">
-                  <button
+                <button
   onClick={() => {
+    // tweet text (do NOT include any URL in this text)
     const text = encodeURIComponent(
-      resultCard.status === "whitelisted"
+      resultCard?.status === "whitelisted"
         ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
         : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
     );
 
-    // IMPORTANT: use the exact share page that has the OG tags (Card Validator validated this)
-    const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now();
+    // IMPORTANT: exact public share page (the one validated in Card Validator)
+    const sharePage = "https://monafuku-checker.vercel.app/share/card.html?v=" + Date.now();
+
+    // debug log so you can inspect the exact URL opened in the console
+    console.log("Opening Twitter share with URL:", sharePage);
 
     window.open(
       `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`,
@@ -516,6 +516,7 @@ export default function App() {
 >
   Share on X
 </button>
+
 
                   <button onClick={downloadCardAsImage} className="px-4 py-2 rounded-lg bg-white border">Download card (PNG)</button>
 
