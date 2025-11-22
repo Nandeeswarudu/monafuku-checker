@@ -32,7 +32,7 @@ const ART_IMAGE_URL = ART_CARD_IMAGES[0];
 const MUSIC_URL = "/audio/monafuku-theme.mp3";
 
 // your live site URL (used only in share links)
-const sharePage = "https://monafuku-checker.vercel.app/share/card.html?v=" + Date.now();
+const BASE_URL = "https://monafuku-checker.vercel.app";
 
 // demo whitelist map: address -> tier (lowercase addresses)
 const WHITELIST_MAP = {
