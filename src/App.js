@@ -228,26 +228,25 @@ export default function App() {
   };
 
     // Replace your existing handleShare with this.
+  
+  // --- patched handleShare: opens the validated share page so Twitter shows the OG image ---
   const handleShare = () => {
-    // IMPORTANT: This is the local path to the file you uploaded.
-    // Your deployment/tooling will transform this path into a public URL.
-    // Use that public URL as the shared page so Twitter can fetch preview cards.
-    const sharePage = "/mnt/data/App.js"; // <-- platform will transform this path to a public URL
-
-    const text = encodeURIComponent(
-      "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
-    );
-
-    const url = encodeURIComponent(sharePage);
-
-    // Open X/Twitter composer with text + link. If the linked page has og:image meta tags,
-    // Twitter will show an image preview in the composer.
-    window.open(
-      `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
+    try {
+      const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now(); // cache-buster so Twitter re-scrapes
+      const text = encodeURIComponent(
+        resultCard?.status === "whitelisted"
+          ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
+          : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
+      );
+      // open composer with text + URL (URL is the share page validated by Card Validator)
+      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      console.error("share failed", err);
+      alert("Failed to open share dialog.");
+    }
   };
+  // --- end patched handleShare ---
+
 
 
   /* ------------------- CARD DOWNLOAD ------------------- */
@@ -436,7 +435,13 @@ export default function App() {
 
                         <div className="mt-3 flex gap-2">
                           <button className="flex-1 py-2 rounded-xl border border-purple-100 text-sm" onClick={handleView}>View</button>
-                          <button className="py-2 px-3 rounded-xl bg-gradient-to-r from-yellow-200 to-pink-200 text-sm" onClick={handleShare}>Share</button>
+                         <button 
+  className="py-2 px-3 rounded-xl bg-gradient-to-r from-yellow-200 to-pink-200 text-sm" 
+  onClick={handleShare}
+>
+  Share
+</button>
+
                         </div>
                       </div>
                     </motion.article>
@@ -500,27 +505,19 @@ export default function App() {
 
                 <div className="mt-6 flex gap-3">
                   <button
-  onClick={() => {
-    const text = encodeURIComponent(
-      resultCard.status === "whitelisted"
-        ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
-        : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
-    );
-
-    // Always tweet the share page, which contains OG image + click-through
-    const shareURL = "https://monafuku-checker.vercel.app/share/card.html?v=" + Date.now();
-
-    window.open(
-      `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(shareURL)}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
-  }}
-  className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white"
->
-  Share on X
-</button>
-
+                    onClick={() => {
+                      const text = encodeURIComponent(
+                        resultCard.status === "whitelisted"
+                          ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
+                          : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
+                      );
+                      const url = encodeURIComponent("");
+                      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
+                    }}
+                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white"
+                  >
+                    Share on X
+                  </button>
 
                   <button onClick={downloadCardAsImage} className="px-4 py-2 rounded-lg bg-white border">Download card (PNG)</button>
 
