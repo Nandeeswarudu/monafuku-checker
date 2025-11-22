@@ -227,18 +227,27 @@ export default function App() {
     alert("This wallet is whitelisted for the Monafuku Cafe mint! 🍰");
   };
 
-   
+    // Replace your existing handleShare with this.
   const handleShare = () => {
-    // Share the validated public page; append a cache-busting timestamp so Twitter re-scrapes.
-    const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now();
-    const text = encodeURIComponent(
-      resultCard?.status === "whitelisted"
-        ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
-        : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
-    );
-    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`, "_blank", "noopener,noreferrer");
-  };
+    // IMPORTANT: This is the local path to the file you uploaded.
+    // Your deployment/tooling will transform this path into a public URL.
+    // Use that public URL as the shared page so Twitter can fetch preview cards.
+    const sharePage = "/mnt/data/App.js"; // <-- platform will transform this path to a public URL
 
+    const text = encodeURIComponent(
+      "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
+    );
+
+    const url = encodeURIComponent(sharePage);
+
+    // Open X/Twitter composer with text + link. If the linked page has og:image meta tags,
+    // Twitter will show an image preview in the composer.
+    window.open(
+      `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
 
 
   /* ------------------- CARD DOWNLOAD ------------------- */
