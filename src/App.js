@@ -230,7 +230,7 @@ export default function App() {
    const handleShare = () => {
   // Use the exact public share page that the Card Validator tested.
   // The ?v= timestamp forces Twitter to re-scrape the page and pick up new images.
-  const sharePage = "SITE_URL" + "?v=" + Date.now();
+  const sharePage = `${SITE_URL}?v=${Date.now()}`;
 
   const text = encodeURIComponent(
     resultCard?.status === "whitelisted"
@@ -501,7 +501,7 @@ export default function App() {
     );
 
     // IMPORTANT: exact public share page (the one validated in Card Validator)
-    const sharePage = "SITE_URL?v=" + Date.now();
+    const sharePage = `${SITE_URL}?v=${Date.now()}`;
 
     // debug log so you can inspect the exact URL opened in the console
     console.log("Opening Twitter share with URL:", sharePage);
