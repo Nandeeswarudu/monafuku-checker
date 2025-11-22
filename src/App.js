@@ -227,23 +227,18 @@ export default function App() {
     alert("This wallet is whitelisted for the Monafuku Cafe mint! 🍰");
   };
 
-   const handleShare = () => {
-  // Use the exact public share page that the Card Validator tested.
-  // The ?v= timestamp forces Twitter to re-scrape the page and pick up new images.
-  const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now();
+   
+  const handleShare = () => {
+    // Share the validated public page; append a cache-busting timestamp so Twitter re-scrapes.
+    const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now();
+    const text = encodeURIComponent(
+      resultCard?.status === "whitelisted"
+        ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
+        : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
+    );
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`, "_blank", "noopener,noreferrer");
+  };
 
-  const text = encodeURIComponent(
-    resultCard?.status === "whitelisted"
-      ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
-      : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
-  );
-
-  window.open(
-    `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`,
-    "_blank",
-    "noopener,noreferrer"
-  );
-};
 
 
   /* ------------------- CARD DOWNLOAD ------------------- */
