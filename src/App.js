@@ -228,8 +228,9 @@ export default function App() {
   };
 
    const handleShare = () => {
-  // Exact local path we created above — your deploy will transform this to a public URL
-  const sharePage = "/share/card.html";
+  // Use the exact public share page that the Card Validator tested.
+  // The ?v= timestamp forces Twitter to re-scrape the page and pick up new images.
+  const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now();
 
   const text = encodeURIComponent(
     resultCard?.status === "whitelisted"
@@ -243,7 +244,6 @@ export default function App() {
     "noopener,noreferrer"
   );
 };
-
 
 
   /* ------------------- CARD DOWNLOAD ------------------- */
