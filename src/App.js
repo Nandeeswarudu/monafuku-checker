@@ -496,19 +496,26 @@ export default function App() {
 
                 <div className="mt-6 flex gap-3">
                   <button
-                    onClick={() => {
-                      const text = encodeURIComponent(
-                        resultCard.status === "whitelisted"
-                          ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
-                          : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
-                      );
-                      const url = encodeURIComponent(SITE_URL);
-                      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
-                    }}
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white"
-                  >
-                    Share on X
-                  </button>
+  onClick={() => {
+    const text = encodeURIComponent(
+      resultCard.status === "whitelisted"
+        ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
+        : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
+    );
+
+    // IMPORTANT: use the exact share page that has the OG tags (Card Validator validated this)
+    const sharePage = "https://monafuku-checker.vercel.app/share/card.html" + "?v=" + Date.now();
+
+    window.open(
+      `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(sharePage)}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }}
+  className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white"
+>
+  Share on X
+</button>
 
                   <button onClick={downloadCardAsImage} className="px-4 py-2 rounded-lg bg-white border">Download card (PNG)</button>
 
