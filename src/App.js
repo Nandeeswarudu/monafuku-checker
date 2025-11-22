@@ -32,7 +32,7 @@ const ART_IMAGE_URL = ART_CARD_IMAGES[0];
 const MUSIC_URL = "/audio/monafuku-theme.mp3";
 
 // your live site URL (used only in share links)
-const SITE_URL = "https://monafuku-checker.vercel.app/share/card.html?v=TIMESTAMP";
+const sharePage = "https://monafuku-checker.vercel.app/share/card.html?v=" + Date.now();
 
 // demo whitelist map: address -> tier (lowercase addresses)
 const WHITELIST_MAP = {
@@ -506,7 +506,7 @@ export default function App() {
                           ? "I just checked the Monafuku Cafe whitelist — I’m whitelisted! 🍰✨"
                           : "I just checked the Monafuku Cafe whitelist — not yet, but there will be gacha on mint day! 🍀"
                       );
-                      const url = encodeURIComponent(SITE_URL);
+                      const url = encodeURIComponent("");
                       window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
                     }}
                     className="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-400 to-purple-400 text-white"
@@ -527,5 +527,3 @@ export default function App() {
     </div>
   );
 }
-
-
